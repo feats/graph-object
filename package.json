@@ -18,7 +18,7 @@
     "test": "mocha test/*.spec.js --require config/mocha.js --compilers js:babel-core/register",
     "test-watch": "mocha test/*.spec.js --require config/mocha.js --compilers js:babel-core/register --watch",
     "lint-js": "eslint plugin",
-    "prepublish": "babel -d build/"
+    "prepublish": "babel -d build/ package/"
   },
   "repository": {
     "type": "git",
@@ -29,5 +29,11 @@
   "bugs": {
     "url": "https://github.com/Quadric/graph-object/issues"
   },
-  "homepage": "https://github.com/Quadric/graph-object#readme"
+  "homepage": "https://github.com/Quadric/graph-object#readme",
+  "devDependencies": {
+    "babel-cli": "6.x.x",
+    "babel-core": "^6.14.0",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-stage-2": "^6.13.0"
+  }
 }
