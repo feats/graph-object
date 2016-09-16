@@ -9,9 +9,9 @@ Don't let your graph oriented project become a mess. Add structure to it!
 
 _This is an **experimental project** not ready for production use yet.
 Part of the features described in this document are still being implemented.
-The best way to check the features currently implemented is checking out our [example app](https://github.com/Quadric/perfect-graphql-starter).
+The best way to check the features currently implemented is checking out our [example app](https://github.com/Quadric/perfect-graphql-starter)._
 
-We are looking for feedback and are open for discussing the strategy adopted here.
+_We are looking for feedback and are open for discussing the strategy adopted here.
 Do not hesitate opening an issue and sharing your thoughts with us, it will make us happy. :)_
 
 ## Install
