@@ -20,30 +20,55 @@ npm install graph-object --save
 ```
 
 ## Models Usage
+`new MyModel({ field: value })`
 
 ```js
 import { Model } from 'graph-object';
-import Post from './Post';
 
-export default class Author extends Model {
-  posts() {
-    return Post.objects.find({ 'author._id': this._id });
+class Author extends Model {
+  get name() {
+    return `${this.firstName} ${this.lastName}`;
   }
 }
 ```
 
+```js
+> const orwell = new Author({ firstName: 'George', lastName: 'Orwell' });
+> orwell.firstName
+'George'
+> orwell.name
+'George Orwell'
+```
+
 ## Authorization
 
-Authorization is as simple as it could be.
+#### Allow/Deny Access
 
-If your models are connected to a GraphQL server, you won't need to worry about authorization there.
-Graph-object will take care of it for you there as well. How cool is that? :)
+`allow(object, objectCRUD, fields_RU_)`
 
 ```js
-import { allow } from 'graph-object';
+import { allow, controlAccess } from 'graph-object';
 
 class Post extends Model {
   ...
+}
+
+class Author extends Model {
+  get posts() {
+    return Post.objects.find({ 'author._id': this._id });
+  }
+
+  get publicPosts() {
+    return controlAccess(
+      Post.objects.find({ 'author._id': this._id })
+    )
+  }
+
+  allowedPosts(context) {
+    return controlAccess(
+      Post.objects.find({ 'author._id': this._id }), context
+    )
+  }
 }
 
 allow(Post, {
@@ -51,7 +76,8 @@ allow(Post, {
     return this.author._id === context.userId || !this.private;
   },
 }, {
-  views: { // Post.view's permissions. Only `read` and `update` are available for fields.
+  views: { // `view` field permissions.
+           // Only `read` and `update` are available for fields.
     read(context) {
       return this.author._id === context.userId;
     },
@@ -60,6 +86,16 @@ allow(Post, {
     }
   }
 });
+```
+
+```js
+> // someAuthor only published a private ({private: 1}) post.
+> someAuthor.posts
+Error: 'read' permission not granted by Post
+> someAuthor.public
+[]
+> someAuthor.allowedPosts({ userId: 1 })
+[Post]
 ```
 
 ## Managers Usage
